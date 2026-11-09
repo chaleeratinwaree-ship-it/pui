@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ระบบสารสนเทศนวัตกรรมแปรรูปสับปะรด (Pineapple Innovation Dashboard)</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Font - Kanit & Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Kanit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        pine: {
+                            50: '#fefce8',
+                            100: '#fef9c3',
+                            200: '#fef08a',
+                            300: '#fde047',
+                            400: '#facc15',
+                            500: '#eab308',
+                            600: '#ca8a04',
+                            700: '#a16207',
+                        },
+                        leaf: {
+                            50: '#f0fdf4',
+                            100: '#dcfce7',
+                            500: '#22c55e',
+                            600: '#16a34a',
+                            700: '#15803d',
+                            800: '#166534',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Kanit', 'Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Kanit', 'Inter', sans-serif;
+            background-color: #f8fafc;
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(8px);
+        }
+    </style>
+</head>
+<body class="text-slate-800 antialiased min-h-screen flex flex-col">
+
+    <!-- Top Navigation Header -->
+    <header class="bg-gradient-to-r from-leaf-800 via-leaf-700 to-pine-700 text-white sticky top-0 z-50 shadow-md">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+            <div class="flex items-center space-x-3">
+                <div class="w-10 h-10 rounded-xl bg-pine-400 text-leaf-800 flex items-center justify-center font-bold text-xl shadow-inner">
+                    <i class="fa-solid fa-pineapple"></i>
+                </div>
+                <div>
+                    <h1 class="text-lg sm:text-xl font-bold tracking-tight">ระบบสารสนเทศนวัตกรรมแปรรูปสับปะรด</h1>
+                    <p class="text-xs text-leaf-100 hidden sm:block">Pineapple Product Innovation & Market Analytics Dashboard</p>
+                </div>
+            </div>
+            
+            <div class="flex items-center space-x-3">
+                <button onclick="toggleModal('infoModal')" class="bg-white/10 hover:bg-white/20 text-white px-3 py-1.5 rounded-lg text-xs sm:text-sm font-medium transition flex items-center gap-1.5">
+                    <i class="fa-solid fa-circle-info"></i>
+                    <span class="hidden sm:inline">คำแนะนำ</span>
+                </button>
+                <div class="bg-pine-500/20 text-pine-200 border border-pine-400/30 text-xs px-3 py-1 rounded-full font-medium">
+                    <i class="fa-solid fa-sparkles text-pine-300 mr-1"></i> เทรนด์อาหารปี 2026
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content Container -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 flex-1 w-full space-y-6">
+
+        <!-- Top Summary Cards -->
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6">
+            <!-- Metric 1 -->
+            <div class="bg-white rounded-2xl p-4 sm:p-5 shadow-sm border border-slate-100 flex items-center space-x-4">
+                <div class="w-12 h-12 rounded-xl bg-pine-100 text-pine-600 flex items-center justify-center text-xl shrink-0">
+                    <i class="fa-solid fa-lightbulb"></i>
+                </div>
+                <div>
+                    <p class="text-xs sm:text-sm font-medium text-slate-500">ไอเดียผลิตภัณฑ์</p>
+                    <h3 class="text-xl sm:text-2xl font-bold text-slate-800" id="totalIdeasCount">8 ไอเดีย</h3>
+                </div>
+            </div>
+
+            <!-- Metric 2 -->
+            <div class="bg-white rounded-2xl p-4 sm:p-5 shadow-sm border border-slate-100 flex items-center space-x-4">
+                <div class="w-12 h-12 rounded-xl bg-emerald-100 text-emerald-600 flex items-center justify-center text-xl shrink-0">
+                    <i class="fa-solid fa-layer-group"></i>
+                </div>
+                <div>
+                    <p class="text-xs sm:text-sm font-medium text-slate-500">หมวดหมู่หลัก</p>
+                    <h3 class="text-xl sm:text-2xl font-bold text-slate-800">4 หมวด</h3>
+                </div>
+            </div>
+
+            <!-- Metric 3 -->
+            <div class="bg-white rounded-2xl p-4 sm:p-5 shadow-sm border border-slate-100 flex items-center space-x-4">
+                <div class="w-12 h-12 rounded-xl bg-amber-100 text-amber-600 flex items-center justify-center text-xl shrink-0">
+                    <i class="fa-solid fa-users"></i>
+                </div>
+                <div>
+                    <p class="text-xs sm:text-sm font-medium text-slate-500">กลุ่มเป้าหมายหลัก</p>
+                    <h3 class="text-xl sm:text-2xl font-bold text-slate-800">4 กลุ่ม</h3>
+                </div>
+            </div>
+
+            <!-- Metric 4 -->
+            <div class="bg-white rounded-2xl p-4 sm:p-5 shadow-sm border border-slate-100 flex items-center space-x-4">
+                <div class="w-12 h-12 rounded-xl bg-teal-100 text-teal-600 flex items-center justify-center text-xl shrink-0">
+                    <i class="fa-solid fa-leaf"></i>
+                </div>
+                <div>
+                    <p class="text-xs sm:text-sm font-medium text-slate-500">แนวคิดขับเคลื่อน</p>
+                    <h3 class="text-base sm:text-lg font-bold text-slate-800">Zero Waste</h3>
+                </div>
+            </div>
+        </div>
+
+        <!-- Filter & Search Section -->
+        <div class="bg-white rounded-2xl p-4 sm:p-6 shadow-sm border border-slate-100 space-y-4">
+            <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                <div>
+                    <h2 class="text-lg font-bold text-slate-800">สำรวจไอเดียผลิตภัณฑ์แปรรูปแปลกใหม่</h2>
+                    <p class="text-xs sm:text-sm text-slate-500">ค้นหาและกรองตามประเภทผลิตภัณฑ์เพื่อดูรายละเอียด รสชาติ และกลุ่มเป้าหมาย</p>
+                </div>
+                <!-- Search Input -->
+                <div class="relative w-full md:w-72">
+                    <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-sm"></i>
+                    <input type="text" id="searchInput" onkeyup="filterProducts()" placeholder="ค้นหาชื่อ, รสชาติ, กลุ่มเป้าหมาย..." 
+                        class="w-full pl-9 pr-4 py-2 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-pine-400 transition">
+                </div>
+            </div>
+
+            <!-- Category Filter Buttons -->
+            <div class="flex flex-wrap gap-2 pt-2 border-t border-slate-100" id="filterContainer">
+                <button onclick="setFilter('all')" class="filter-btn active px-4 py-2 rounded-xl text-xs sm:text-sm font-medium transition bg-leaf-700 text-white shadow-sm" data-category="all">
+                    <i class="fa-solid fa-grid-2 mr-1"></i> ทั้งหมด (8)
+                </button>
+                <button onclick="setFilter('snack')" class="filter-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-medium transition bg-slate-100 text-slate-600 hover:bg-slate-200" data-category="snack">
+                    <i class="fa-solid fa-cookie-bite mr-1"></i> ขนมทานเล่น (3)
+                </button>
+                <button onclick="setFilter('beverage')" class="filter-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-medium transition bg-slate-100 text-slate-600 hover:bg-slate-200" data-category="beverage">
+                    <i class="fa-solid fa-bottle-droplet mr-1"></i> เครื่องดื่มสุขภาพ (2)
+                </button>
+                <button onclick="setFilter('culinary')" class="filter-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-medium transition bg-slate-100 text-slate-600 hover:bg-slate-200" data-category="culinary">
+                    <i class="fa-solid fa-utensils mr-1"></i> เครื่องปรุงรส (2)
+                </button>
+                <button onclick="setFilter('bakery')" class="filter-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-medium transition bg-slate-100 text-slate-600 hover:bg-slate-200" data-category="bakery">
+                    <i class="fa-solid fa-cake-slice mr-1"></i> เบเกอรี่/ของหวาน (1)
+                </button>
+            </div>
+        </div>
+
+        <!-- Product Cards Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6" id="productGrid">
+            <!-- Product items will be rendered by JS -->
+        </div>
+
+        <!-- Empty state message -->
+        <div id="noResults" class="hidden text-center py-12 bg-white rounded-2xl border border-dashed border-slate-200">
+            <i class="fa-solid fa-basket-shopping text-4xl text-slate-300 mb-3"></i>
+            <h3 class="text-lg font-semibold text-slate-600">ไม่พบไอเดียแปรรูปที่ค้นหา</h3>
+            <p class="text-sm text-slate-400">ลองเปลี่ยนคำค้นหาหรือเลือกหมวดหมู่อื่น</p>
+        </div>
+
+        <!-- Analytics & Charts Section -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <!-- Chart 1: Market Potential by Category -->
+            <div class="lg:col-span-2 bg-white p-5 sm:p-6 rounded-2xl shadow-sm border border-slate-100 flex flex-col justify-between">
+                <div class="flex items-center justify-between mb-4">
+                    <div>
+                        <h3 class="font-bold text-slate-800 text-base sm:text-lg">ศักยภาพการเติบโตในตลาด (Market Potential)</h3>
+                        <p class="text-xs text-slate-500">วิเคราะห์ตามหมวดหมู่นวัตกรรมและแนวโน้มความต้องการ</p>
+                    </div>
+                    <span class="bg-pine-100 text-pine-700 text-xs font-semibold px-2.5 py-1 rounded-md">คะแนนเต็ม 100</span>
+                </div>
+                <div class="h-64 sm:h-72 w-full">
+                    <canvas id="marketPotentialChart"></canvas>
+                </div>
+            </div>
+
+            <!-- Chart 2: Target Audience Distribution -->
+            <div class="bg-white p-5 sm:p-6 rounded-2xl shadow-sm border border-slate-100 flex flex-col justify-between">
+                <div class="mb-4">
+                    <h3 class="font-bold text-slate-800 text-base sm:text-lg">สัดส่วนกลุ่มผู้บริโภคเป้าหมาย</h3>
+                    <p class="text-xs text-slate-500">แบ่งตามพฤติกรรมการซื้อและไลฟ์สไตล์</p>
+                </div>
+                <div class="h-64 sm:h-72 w-full flex items-center justify-center">
+                    <canvas id="consumerPieChart"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- Zero Waste Strategy & Success Factors -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <!-- Strategy Card 1 -->
+            <div class="bg-gradient-to-br from-leaf-800 to-leaf-700 text-white p-6 rounded-2xl shadow-md space-y-4">
+                <div class="flex items-center space-x-3">
+                    <div class="w-10 h-10 rounded-lg bg-white/20 flex items-center justify-center text-amber-300 text-xl font-bold">
+                        <i class="fa-solid fa-recycle"></i>
+                    </div>
+                    <h3 class="text-lg font-bold">กลยุทธ์ Zero Waste & การเพิ่มมูลค่า</h3>
+                </div>
+                <ul class="space-y-3 text-sm text-leaf-100">
+                    <li class="flex items-start space-x-2">
+                        <i class="fa-solid fa-circle-check text-pine-300 mt-1"></i>
+                        <span><strong>แปรรูปแกนสับปะรด:</strong> นำแกนที่มีเอ็นไซม์โบรมีเลนสูงไปผลิตคราฟต์โซดา หรือผงหมักเนื้อนุ่ม</span>
+                    </li>
+                    <li class="flex items-start space-x-2">
+                        <i class="fa-solid fa-circle-check text-pine-300 mt-1"></i>
+                        <span><strong>สารสกัดจากเปลือก:</strong> นำเปลือกไปหมักเป็นไซเดอร์ หรือสกัดสารต้านอนุมูลอิสระสำหรับเครื่องดื่มสุขภาพ</span>
+                    </li>
+                    <li class="flex items-start space-x-2">
+                        <i class="fa-solid fa-circle-check text-pine-300 mt-1"></i>
+                        <span><strong>สูตรความหวานธรรมชาติ:</strong> เน้นชูความหวานอมเปรี้ยวจริงโดยไม่เติมน้ำตาลทราย (Zero Added Sugar)</span>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Strategy Card 2 -->
+            <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 space-y-4">
+                <div class="flex items-center space-x-3">
+                    <div class="w-10 h-10 rounded-lg bg-pine-100 text-pine-700 flex items-center justify-center text-xl font-bold">
+                        <i class="fa-solid fa-trophy"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-slate-800">ปัจจัยความสำเร็จ (Key Success Factors)</h3>
+                </div>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm">
+                    <div class="p-3 bg-slate-50 rounded-xl border border-slate-100">
+                        <p class="font-semibold text-slate-800 mb-1"><i class="fa-solid fa-box text-pine-500 mr-1.5"></i> บรรจุภัณฑ์ทันสมัย</p>
+                        <p class="text-xs text-slate-500">ดีไซน์พรีเมียม พกพาง่าย ยืดอายุการเก็บโดยไม่ใส่สารกันบูด</p>
+                    </div>
+                    <div class="p-3 bg-slate-50 rounded-xl border border-slate-100">
+                        <p class="font-semibold text-slate-800 mb-1"><i class="fa-solid fa-wand-magic-sparkles text-pine-500 mr-1.5"></i> รสชาติฟิวชัน</p>
+                        <p class="text-xs text-slate-500">ตัดหวานเปรี้ยวด้วยความเผ็ด ช็อกโกแลต หรือชีส เพื่อสร้างประสบการณ์ใหม่</p>
+                    </div>
+                    <div class="p-3 bg-slate-50 rounded-xl border border-slate-100">
+                        <p class="font-semibold text-slate-800 mb-1"><i class="fa-solid fa-heart-pulse text-pine-500 mr-1.5"></i> เรื่องราวสายสุขภาพ</p>
+                        <p class="text-xs text-slate-500">ชูคุณประโยชน์โพรไบโอติกส์ ช่วยย่อยอาหาร และวิตามินซีสูง</p>
+                    </div>
+                    <div class="p-3 bg-slate-50 rounded-xl border border-slate-100">
+                        <p class="font-semibold text-slate-800 mb-1"><i class="fa-solid fa-bullseye text-pine-500 mr-1.5"></i> ตลาดของฝากยุคใหม่</p>
+                        <p class="text-xs text-slate-500">ยกระดับจากสินค้าพื้นบ้าน สู่ของขวัญระดับพรีเมียม</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-slate-800 text-slate-400 text-xs sm:text-sm py-6 border-t border-slate-700 mt-8">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-3">
+            <p>© 2026 ระบบสารสนเทศนวัตกรรมแปรรูปสับปะรด (Pineapple Innovation Dashboard)</p>
+            <div class="flex items-center space-x-4">
+                <span class="hover:text-white transition cursor-pointer"><i class="fa-solid fa-seedling mr-1 text-leaf-500"></i> นวัตกรรมเกษตรแปรรูป</span>
+                <span class="hover:text-white transition cursor-pointer"><i class="fa-solid fa-chart-line mr-1 text-pine-400"></i> การวิเคราะห์ตลาด</span>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Product Detail Modal -->
+    <div id="productModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-3xl max-w-xl w-full overflow-hidden shadow-2xl transform transition-all space-y-0">
+            <div class="relative h-56 bg-slate-100">
+                <img id="modalImg" src="" alt="" class="w-full h-full object-cover">
+                <button onclick="toggleModal('productModal')" class="absolute top-4 right-4 bg-slate-900/50 hover:bg-slate-900 text-white w-9 h-9 rounded-full flex items-center justify-center transition">
+                    <i class="fa-solid fa-xmark text-lg"></i>
+                </button>
+                <span id="modalCategory" class="absolute bottom-4 left-4 bg-leaf-700 text-white text-xs font-semibold px-3 py-1 rounded-full shadow-md">
+                    หมวดหมู่
+                </span>
+            </div>
+            <div class="p-6 space-y-4">
+                <h3 id="modalTitle" class="text-xl font-bold text-slate-800">ชื่อผลิตภัณฑ์</h3>
+                <p id="modalDesc" class="text-sm text-slate-600 leading-relaxed">รายละเอียดผลิตภัณฑ์</p>
+                
+                <div class="bg-amber-50 rounded-2xl p-4 border border-amber-100 space-y-2">
+                    <p class="text-xs font-bold text-amber-800 uppercase tracking-wider"><i class="fa-solid fa-utensils mr-1"></i> มิติรสชาติ (Flavor Profile):</p>
+                    <p id="modalTaste" class="text-sm text-slate-700 font-medium"></p>
+                </div>
+
+                <div class="flex items-center justify-between text-xs sm:text-sm text-slate-500 pt-2 border-t border-slate-100">
+                    <div>
+                        <span class="font-semibold text-slate-700"><i class="fa-solid fa-users text-leaf-600 mr-1"></i> กลุ่มเป้าหมาย:</span>
+                        <span id="modalTarget"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Info Modal -->
+    <div id="infoModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-3xl max-w-lg w-full p-6 shadow-2xl space-y-4">
+            <div class="flex items-center justify-between">
+                <h3 class="text-lg font-bold text-slate-800"><i class="fa-solid fa-circle-info text-pine-500 mr-2"></i>เกี่ยวกับแดชบอร์ดนี้</h3>
+                <button onclick="toggleModal('infoModal')" class="text-slate-400 hover:text-slate-600">
+                    <i class="fa-solid fa-xmark text-xl"></i>
+                </button>
+            </div>
+            <p class="text-sm text-slate-600 leading-relaxed">
+                แดชบอร์ดนี้รวบรวมแนวคิดนวัตกรรมการแปรรูปสับปะรด เพื่อสร้างผลิตภัณฑ์ที่มีความแปลกใหม่ รสชาติดี ตอบโจทย์ความต้องการของผู้บริโภคยุคใหม่ และเพิ่มมูลค่าวัตถุดิบทางการเกษตรตามแนวคิด Zero Waste
+            </p>
+            <div class="bg-slate-50 p-4 rounded-xl text-xs text-slate-500 space-y-2">
+                <p><strong>การใช้งาน:</strong></p>
+                <ul class="list-disc pl-4 space-y-1">
+                    <li>คลิกแท็บเพื่อกรองตามประเภทสินค้า</li>
+                    <li>ใช้ช่องค้นหาเพื่อค้นหาชื่อไอเดีย รสชาติ หรือกลุ่มเป้าหมาย</li>
+                    <li>คลิกที่การ์ดสินค้าเพื่อดูรายละเอียดเจาะลึก</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- Application Logic -->
+    <script>
+        // Product Data Array
+        const products = [
+            {
+                id: 1,
+                title: "สับปะรดฟรีซดรายเคลือบช็อกโกแลต / พริกเกลือหิมะ",
+                category: "snack",
+                categoryName: "ขนมทานเล่น",
+                image: "https://images.unsplash.com/photo-1599599810769-bcde5a160d32?auto=format&fit=crop&w=800&q=80",
+                highlight: "เนื้อฟูกรอบ เคลือบช็อกโกแลตเข้มข้นหรือพริกเกลือหิมะ",
+                taste: "หวานเปรี้ยว กรอบเบา ผสานความเข้มข้นของ Dark Chocolate หรือความแซ่บของพริกเกลือ",
+                target: "กลุ่มคนทำงาน, วัยรุ่น, ตลาดของฝากพรีเมียม",
+                badgeBg: "bg-pine-100 text-pine-800"
+            },
+            {
+                id: 2,
+                title: "สับปะรดหนึบเคลือบผงหม่าล่า / พริกเกลือโบราณ",
+                category: "snack",
+                categoryName: "ขนมทานเล่น",
+                image: "https://images.unsplash.com/photo-1606851094655-b2593a9af63f?auto=format&fit=crop&w=800&q=80",
+                highlight: "สแน็กสายแซ่บสไตล์ฟิวชัน ตัดรสเปรี้ยวหวาน",
+                taste: "หนึบหนับ เผ็ดชาปลายลิ้น หวานอมเปรี้ยว สดชื่น เคี้ยวเพลิน",
+                target: "สายทานเล่น, สายปาร์ตี้, ทานเป็นของแกล้ม",
+                badgeBg: "bg-amber-100 text-amber-800"
+            },
+            {
+                id: 3,
+                title: "วุ้นกรอบสับปะรดสมุนไพรสด",
+                category: "snack",
+                categoryName: "ขนมทานเล่น",
+                image: "https://images.unsplash.com/photo-1582058091505-f87a2e55a40f?auto=format&fit=crop&w=800&q=80",
+                highlight: "ขนมไทยฟิวชันสูตรหวานน้อย ผสมใบเตย/มะกรูด/ขิง",
+                taste: "ด้านนอกกรอบแก้ว ด้านนุ่ม หอมกลิ่นสับปะรดละมุนร่วมกับสมุนไพรสด",
+                target: "กลุ่มผู้ใหญ่, ผู้ที่ชอบขนมไทยฟิวชันสุขภาพ",
+                badgeBg: "bg-emerald-100 text-emerald-800"
+            },
+            {
+                id: 4,
+                title: "คราฟต์โซดาสับปะรด / Kombucha สับปะรด",
+                category: "beverage",
+                categoryName: "เครื่องดื่มสุขภาพ",
+                image: "https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?auto=format&fit=crop&w=800&q=80",
+                highlight: "หมักจากเนื้อและแกนสับปะรด ได้โพรไบโอติกส์ธรรมชาติ",
+                taste: "ซ่า สดชื่น เปรี้ยวหวานกำลังดี มีกลิ่นหอมการหมักธรรมชาติ",
+                target: "สายสุขภาพ, คาเฟ่, สายเครื่องดื่มไร้แอลกอฮอล์",
+                badgeBg: "bg-teal-100 text-teal-800"
+            },
+            {
+                id: 5,
+                title: "ไซเดอร์สับปะรดพร้อมดื่ม (Pineapple Vinegar Shot)",
+                category: "beverage",
+                categoryName: "เครื่องดื่มสุขภาพ",
+                image: "https://images.unsplash.com/photo-1546173159-315724a31696?auto=format&fit=crop&w=800&q=80",
+                highlight: "หมักธรรมชาติ รสเปรี้ยวกลมกล่อม มีเอ็นไซม์โบรมีเลนสูง",
+                taste: "เปรี้ยวละมุน สดชื่น ดื่มง่าย ช่วยย่อยอาหารและปรับสมดุลลำไส้",
+                target: "สายรักสุขภาพ, สาย Clean / Keto",
+                badgeBg: "bg-cyan-100 text-cyan-800"
+            },
+            {
+                id: 6,
+                title: "แยมสับปะรดพริกสด (Pineapple Chili Jam)",
+                category: "culinary",
+                categoryName: "เครื่องปรุงรส",
+                image: "https://images.unsplash.com/photo-1563729784474-d77dbb933a9e?auto=format&fit=crop&w=800&q=80",
+                highlight: "Savory Jam แยมรสเผ็ดหวานสำหรับทานคู่สเต๊กและชีส",
+                taste: "หวานเปรี้ยวกลมกล่อมจากสับปะรด เผ็ดหอมจากพริกแห้งและพริกจินดา",
+                target: "สายทำอาหาร, แม่บ้านยุคใหม่, ร้านอาหารฟิวชัน",
+                badgeBg: "bg-orange-100 text-orange-800"
+            },
+            {
+                id: 7,
+                title: "ผงหมักนุ่มสับปะรดสกัดธรรมชาติ",
+                category: "culinary",
+                categoryName: "เครื่องปรุงรส",
+                image: "https://images.unsplash.com/photo-1596040033229-a9821ebd058d?auto=format&fit=crop&w=800&q=80",
+                highlight: "ดึงสารโบรมีเลนจากแกนสับปะรด ช่วยให้เนื้อสัตว์นุ่มเร็ว",
+                taste: "กลมกล่อม เพิ่มกลิ่นหอมนุ่มนวลให้เนื้อสัตว์ ไร้สารเคมีสังเคราะห์",
+                target: "กลุ่มคนทำอาหาร, ร้านปิ้งย่าง, ร้านชาบู",
+                badgeBg: "bg-rose-100 text-rose-800"
+            },
+            {
+                id: 8,
+                title: "สับปะรดกวนไส้ชีสลาวา / ครัมเบิ้ลอบกรอบ",
+                category: "bakery",
+                categoryName: "เบเกอรี่/ของหวาน",
+                image: "https://images.unsplash.com/photo-1535141192574-5d4897c13136?auto=format&fit=crop&w=800&q=80",
+                highlight: "พัฒนาจากพายสับปะรด สู่ไส้ชีสทะลักและครัมเบิ้ลกรุบกรอบ",
+                taste: "ความนุ่มมันของครีมชีส ตัดกับความหวานเปรี้ยวกรอบของเนื้อสับปะรด",
+                target: "กลุ่มเบเกอรี่เดลิเวอรี่, ของฝากยุคใหม่",
+                badgeBg: "bg-indigo-100 text-indigo-800"
+            }
+        ];
+
+        let currentCategory = 'all';
+
+        // Render Product Cards
+        function renderProducts(items) {
+            const grid = document.getElementById('productGrid');
+            const noResults = document.getElementById('noResults');
+            
+            if (items.length === 0) {
+                grid.innerHTML = '';
+                noResults.classList.remove('hidden');
+                return;
+            }
+            
+            noResults.classList.add('hidden');
+            grid.innerHTML = items.map(product => `
+                <div class="bg-white rounded-2xl overflow-hidden border border-slate-100 shadow-sm hover:shadow-lg transition-all duration-300 flex flex-col group cursor-pointer" onclick="openProductModal(${product.id})">
+                    <div class="relative h-44 overflow-hidden bg-slate-100">
+                        <img src="${product.image}" alt="${product.title}" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+                        <span class="absolute top-3 left-3 ${product.badgeBg} text-xs font-semibold px-2.5 py-1 rounded-full shadow-sm">
+                            ${product.categoryName}
+                        </span>
+                    </div>
+                    <div class="p-4 sm:p-5 flex-1 flex flex-col justify-between space-y-3">
+                        <div>
+                            <h3 class="font-bold text-slate-800 text-base group-hover:text-leaf-700 transition line-clamp-2">${product.title}</h3>
+                            <p class="text-xs text-slate-500 mt-1 line-clamp-2">${product.highlight}</p>
+                        </div>
+                        
+                        <div class="pt-3 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500">
+                            <span class="truncate max-w-[170px]"><i class="fa-solid fa-users text-pine-500 mr-1"></i> ${product.target}</span>
+                            <span class="text-leaf-600 font-semibold flex items-center gap-1 group-hover:translate-x-1 transition">
+                                รายละเอียด <i class="fa-solid fa-arrow-right text-[10px]"></i>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Filter functionality
+        function setFilter(category) {
+            currentCategory = category;
+            
+            // Update active state of buttons
+            const buttons = document.querySelectorAll('.filter-btn');
+            buttons.forEach(btn => {
+                if (btn.dataset.category === category) {
+                    btn.className = "filter-btn active px-4 py-2 rounded-xl text-xs sm:text-sm font-medium transition bg-leaf-700 text-white shadow-sm";
+                } else {
+                    btn.className = "filter-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-medium transition bg-slate-100 text-slate-600 hover:bg-slate-200";
+                }
+            });
+
+            filterProducts();
+        }
+
+        function filterProducts() {
+            const query = document.getElementById('searchInput').value.toLowerCase();
+            const filtered = products.filter(p => {
+                const matchesCategory = (currentCategory === 'all' || p.category === currentCategory);
+                const matchesSearch = p.title.toLowerCase().includes(query) || 
+                                      p.taste.toLowerCase().includes(query) || 
+                                      p.target.toLowerCase().includes(query) ||
+                                      p.categoryName.toLowerCase().includes(query);
+                return matchesCategory && matchesSearch;
+            });
+            renderProducts(filtered);
+        }
+
+        // Modal Controls
+        function toggleModal(modalId) {
+            const modal = document.getElementById(modalId);
+            modal.classList.toggle('hidden');
+        }
+
+        function openProductModal(id) {
+            const product = products.find(p => p.id === id);
+            if (!product) return;
+
+            document.getElementById('modalTitle').textContent = product.title;
+            document.getElementById('modalDesc').textContent = product.highlight;
+            document.getElementById('modalTaste').textContent = product.taste;
+            document.getElementById('modalTarget').textContent = product.target;
+            document.getElementById('modalCategory').textContent = product.categoryName;
+            document.getElementById('modalImg').src = product.image;
+
+            toggleModal('productModal');
+        }
+
+        // Initialize Charts
+        function initCharts() {
+            // Market Potential Bar Chart
+            const ctx1 = document.getElementById('marketPotentialChart').getContext('2d');
+            new Chart(ctx1, {
+                type: 'bar',
+                data: {
+                    labels: ['ขนมทานเล่น (Snacks)', 'เครื่องดื่มสุขภาพ (Beverages)', 'เครื่องปรุงรส (Culinary)', 'เบเกอรี่/ของหวาน (Bakery)'],
+                    datasets: [{
+                        label: 'ดรรชนีความน่าสนใจของตลาด (0-100)',
+                        data: [92, 88, 78, 85],
+                        backgroundColor: [
+                            'rgba(234, 179, 8, 0.85)',
+                            'rgba(34, 197, 94, 0.85)',
+                            'rgba(249, 115, 22, 0.85)',
+                            'rgba(99, 102, 241, 0.85)'
+                        ],
+                        borderRadius: 8,
+                        borderWidth: 0
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return ` คะแนนศักยภาพ: ${context.raw} / 100`;
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            max: 100,
+                            grid: { color: '#f1f5f9' },
+                            ticks: { font: { family: 'Kanit' } }
+                        },
+                        x: {
+                            grid: { display: false },
+                            ticks: { font: { family: 'Kanit', size: 11 } }
+                        }
+                    }
+                }
+            });
+
+            // Consumer Preference Pie Chart
+            const ctx2 = document.getElementById('consumerPieChart').getContext('2d');
+            new Chart(ctx2, {
+                type: 'doughnut',
+                data: {
+                    labels: ['สายสุขภาพ/Keto', 'กลุ่มคนทำงาน/วัยรุ่น', 'สายทำอาหาร/แม่บ้าน', 'ตลาดของฝาก'],
+                    datasets: [{
+                        data: [35, 30, 20, 15],
+                        backgroundColor: [
+                            '#22c55e',
+                            '#eab308',
+                            '#f97316',
+                            '#6366f1'
+                        ],
+                        borderWidth: 2,
+                        borderColor: '#ffffff'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                font: { family: 'Kanit', size: 11 },
+                                boxWidth: 12,
+                                padding: 12
+                            }
+                        }
+                    },
+                    cutout: '65%'
+                }
+            });
+        }
+
+        // On Page Load
+        window.onload = function() {
+            renderProducts(products);
+            initCharts();
+        };
+    </script>
+</body>
+</html>
